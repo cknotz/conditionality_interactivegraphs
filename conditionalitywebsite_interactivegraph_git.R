@@ -4,14 +4,13 @@
 
 # Author: Carlo Knotz
 
-
-library(foreign)
+library("readstata13")
 library(plotly)
 
 # download data
-url <- "https://www.dropbox.com/s/oiiwx0zimq8mxjx/conditionality.csv?dl=1"
+url <- "https://www.dropbox.com/s/xw2nr8gzdf8v940/conditionality.dta?dl=1"
 
-data <- read.csv(url)
+data <- read.dta13(url)
     rm(url)
 
 # subsetting
@@ -25,6 +24,11 @@ mean <- aggregate(data[,3:5],by=list(data$year),FUN=mean,na.rm=T)
     
 data <- rbind(data,mean)
     rm(mean)
+    
+# Rounding
+data$conditionality <- round(data$conditionality,digits=2)
+    data$conditions <- round(data$conditions,digits=2)
+    data$sanctions <- round(data$sanctions,digits=2)
 
 ##############################
 # Line graphs with highcharter
@@ -94,9 +98,9 @@ conditions <- highchart() %>%
     hc_yAxis(title = list(text = "Strictness score"),max=1,min=0) %>%
     hc_add_theme(hc_theme_tufte()) %>%
     hc_exporting(enabled = TRUE,
-                 filename = "conditionality")
+                 filename = "conditions")
 conditions
-saveWidget(conditions,file="conditions.html")
+saveWidget(conditions,file="conditions.html", selfcontained=T)
 
 
 # Benefit sanctions 
@@ -156,9 +160,9 @@ sanctions <- highchart() %>%
     hc_yAxis(title = list(text = "Strictness score"),max=1,min=0) %>%
     hc_add_theme(hc_theme_tufte()) %>%
     hc_exporting(enabled = TRUE,
-                 filename = "conditionality")
+                 filename = "sanctions")
 sanctions
-saveWidget(sanctions,file="sanctions.html")
+saveWidget(sanctions,file="sanctions.html", selfcontained = T)
 
 # Benefit conditionality 
 ########################
@@ -219,7 +223,7 @@ conditionality <- highchart() %>%
     hc_exporting(enabled = TRUE,
                  filename = "conditionality")
 conditionality
-saveWidget(conditionality,file="conditionality.html")
+saveWidget(conditionality,file="conditionality.html", selfcontained = T)
 
 
 
