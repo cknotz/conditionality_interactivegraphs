@@ -1,2 +1,4 @@
 # conditionality_interactivegraphs
- Interactive graphs for benefit conditionality website
+ Replication code for interactive scatterplots on new
+ Unemployment Benefit Conditions & Sanctions Dataset
+ website.
